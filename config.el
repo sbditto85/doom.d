@@ -124,3 +124,16 @@
 
 ;; Window numbering
 (window-numbering-mode 1)
+
+;; Set projectile search path
+(defun sbditto85/set-projectile-project-path ()
+  (interactive)
+  (let ((project-path (getenv "PROJECT_PATH"))
+        )
+    (when project-path
+      (setq projectile-project-search-path project-path)
+      )
+    )
+  )
+
+(sbditto85/set-projectile-project-path)
