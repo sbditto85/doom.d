@@ -52,3 +52,4 @@
 (package! modus-themes)
 (package! window-numbering)
 (package! ztree)
+(package! github-browse-file)
