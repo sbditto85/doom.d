@@ -98,10 +98,17 @@
   (insert (format-time-string "%a %b %d %Y")))
 
 ;; Comments
+(defun author ()
+  (let ((env-author (getenv "AUTHOR")))
+    (if env-author
+        env-author
+        "sbditto85")
+    )
+  )
 (defun comment-attribution ()
   (interactive)
   (evil-append 0)
-  (insert " - Casey, ")
+  (insert " - " (author) ", ")
   (insert-date-time)
   )
 
