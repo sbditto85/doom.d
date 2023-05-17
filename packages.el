@@ -51,3 +51,4 @@
 ;
 (package! modus-themes)
 (package! window-numbering)
+(package! ztree)
