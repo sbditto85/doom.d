@@ -121,3 +121,6 @@
           (lambda ()
             (local-set-key (kbd "M-n") nil)
             (local-set-key (kbd "M-p") nil)))
+
+;; Window numbering
+(window-numbering-mode 1)

@@ -50,3 +50,4 @@
 ;(unpin! t)
 ;
 (package! modus-themes)
+(package! window-numbering)
