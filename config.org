@@ -10,6 +10,9 @@
 - [[#tree-view][Tree view]]
 - [[#movement][Movement]]
 - [[#window-numbering][Window numbering]]
+- [[#projectile][Projectile]]
+  - [[#path][Path]]
+  - [[#search-all-projects][Search all projects]]
 
 * Doom Default Stuff
 $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -113,14 +116,14 @@ they are implemented.
 
 * Time
 #+begin_src elisp :tangle yes
-(defun append-date-time ()
+(defun sbditto85/append-date-time ()
   (interactive)
   (evil-append 0)
   (insert (format-time-string "%a %b %d %Y")))
 
-(map! :leader :desc "Insert current time" :n "d" #'append-date-time)
+(map! :leader :desc "Insert current time" :n "d" #'sbditto85/append-date-time)
 
-(defun insert-date-time ()
+(defun sbditto85/insert-date-time ()
   (interactive)
   (evil-append 0)
   (insert (format-time-string "%a %b %d %Y")))
@@ -128,21 +131,21 @@ they are implemented.
 
 * Comments
 #+begin_src elisp :tangle yes
-(defun author ()
+(defun sbditto85/author ()
   (let ((env-author (getenv "AUTHOR")))
     (if env-author
         env-author
         "sbditto85")
     )
   )
-(defun comment-attribution ()
+(defun sbditto85/comment-attribution ()
   (interactive)
   (evil-append 0)
-  (insert " - " (author) ", ")
-  (insert-date-time)
+  (insert " - " (sbditto85/author) ", ")
+  (sbditto85/insert-date-time)
   )
 
-(map! :leader :desc "Attribute comment" :n "c a" #'comment-attribution)
+(map! :leader :desc "Attribute comment" :n "c a" #'sbditto85/comment-attribution)
 #+end_src
 
 * Tree view
@@ -169,17 +172,39 @@ they are implemented.
 (window-numbering-mode 1)
 #+end_src
 
-;; Set projectile search path
+* Projectile
+** Path
+
 #+begin_src elisp :tangle yes
+(defun sbditto85/projects-path ()
+  (getenv "PROJECTS_PATH")
+  )
+
 (defun sbditto85/set-projectile-project-path ()
   (interactive)
-  (let ((project-path (getenv "PROJECT_PATH"))
+  (let ((projects-path (sbditto85/projects-path))
         )
-    (when project-path
-      (setq projectile-project-search-path project-path)
+    (when projects-path
+      (setq projectile-project-search-path projects-path)
       )
     )
   )
 
 (sbditto85/set-projectile-project-path)
+#+end_src
+
+** Search all projects
+
+#+begin_src elisp :tangle yes
+(defun sbditto85/search-projects ()
+  (interactive)
+  (let ((default-directory (sbditto85/projects-path)))
+    (call-interactively
+     (cond ((modulep! :completion ivy)     #'+ivy/project-search-from-cwd)
+           ((modulep! :completion helm)    #'+helm/project-search-from-cwd)
+           ((modulep! :completion vertico) #'+vertico/project-search-from-cwd)
+           (#'rgrep))))
+  )
+
+(map! :leader :desc "Search Projects" :n "s P" #'sbditto85/search-projects)
 #+end_src
