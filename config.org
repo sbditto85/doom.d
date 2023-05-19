@@ -159,12 +159,17 @@ they are implemented.
 
 #+begin_src elisp :tangle yes
 (map! :desc "Five lines down" :n "M-n" (lambda() (interactive) (evil-next-line 5)))
+(map! :desc "Five lines down" :i "M-n" (lambda() (interactive) (evil-next-line 5)))
 (map! :desc "Five lines up" :n "M-p" (lambda() (interactive) (evil-previous-line 5)))
+(map! :desc "Five lines up" :i "M-p" (lambda() (interactive) (evil-previous-line 5)))
 
 (add-hook 'markdown-mode-hook
           (lambda ()
             (local-set-key (kbd "M-n") nil)
             (local-set-key (kbd "M-p") nil)))
+
+(map! :desc "Down (insert mode)" :i "C-n" #'evil-next-line)
+(map! :desc "Up (insert mode)" :i "C-p" #'evil-previous-line)
 #+end_src
 
 * Window numbering
