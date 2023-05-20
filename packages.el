@@ -54,3 +54,4 @@
 (package! ztree)
 (package! github-browse-file)
 (package! envrc)
+(package! multiple-cursors)
