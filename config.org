@@ -16,6 +16,7 @@
 - [[#projectile][Projectile]]
   - [[#path][Path]]
   - [[#search-all-projects][Search all projects]]
+- [[#dired][Dired]]
 
 * Doom Default Stuff
 $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -228,4 +229,13 @@ I want to be able to quickly add cursors below my current one if the changes lin
   )
 
 (map! :leader :desc "Search Projects" :n "s P" #'sbditto85/search-projects)
+#+end_src
+
+* Dired
+
+#+begin_src elisp :tangle yes
+ (evil-define-key 'normal dired-mode-map
+   (kbd "h") 'dired-up-directory
+   (kbd "l") 'dired-find-file
+   )
 #+end_src
