@@ -8,6 +8,9 @@
 - [[#time][Time]]
 - [[#comments][Comments]]
 - [[#tree-view][Tree view]]
+- [[#multiple-cursors][Multiple Cursors]]
+  - [[#highlight-select][Highlight select]]
+  - [[#cursor-on-next-line][Cursor on next line]]
 - [[#movement][Movement]]
 - [[#window-numbering][Window numbering]]
 - [[#projectile][Projectile]]
@@ -153,8 +156,21 @@ they are implemented.
 ;; SPC o p to toggle treemacs open and closed
 (map! :leader :desc "Toogle select treemacs" :n "w SPC" #'treemacs-select-window)
 #+end_src
+* Multiple Cursors
 
+** Highlight select
+I want to be able to quickly highlight only a select few matches and "g z d" is just too time consuming
+#+begin_src elisp :tangle yes
+(map! :desc "Multiple Cursors Next Highlight" :n "M-I" #'evil-mc-make-and-goto-next-match)
+(map! :desc "Multiple Cursors Next Highlight" :i "M-I" #'evil-mc-make-and-goto-next-match)
+#+end_src
 
+** Cursor on next line
+I want to be able to quickly add cursors below my current one if the changes lines up perfectly
+#+begin_src elisp :tangle yes
+(map! :desc "Multiple Cursors Next Highlight" :n "M-i" #'evil-mc-make-cursor-move-next-line)
+(map! :desc "Multiple Cursors Next Highlight" :i "M-i" #'evil-mc-make-cursor-move-next-line)
+#+end_src
 * Movement
 
 #+begin_src elisp :tangle yes
