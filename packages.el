@@ -55,3 +55,4 @@
 (package! github-browse-file)
 (package! envrc)
 (package! ripgrep)
+(package! typescript-mode)
