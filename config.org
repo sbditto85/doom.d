@@ -176,10 +176,20 @@ I want to be able to quickly add cursors below my current one if the changes lin
 * Movement
 
 #+begin_src elisp :tangle yes
-(map! :desc "Five lines down" :n "M-n" (lambda() (interactive) (evil-next-line 5)))
-(map! :desc "Five lines down" :i "M-n" (lambda() (interactive) (evil-next-line 5)))
-(map! :desc "Five lines up" :n "M-p" (lambda() (interactive) (evil-previous-line 5)))
-(map! :desc "Five lines up" :i "M-p" (lambda() (interactive) (evil-previous-line 5)))
+(defun sbditto85/evil-next-5-lines ()
+  (interactive)
+  (evil-next-line 5)
+  )
+
+(defun sbditto85/evil-previous-5-lines ()
+  (interactive)
+  (evil-previous-line 5)
+  )
+
+(map! :desc "Five lines down" :n "M-n" #'sbditto85/evil-next-5-lines)
+(map! :desc "Five lines down" :i "M-n" #'sbditto85/evil-next-5-lines)
+(map! :desc "Five lines up" :n "M-p" #'sbditto85/evil-previous-5-lines)
+(map! :desc "Five lines up" :i "M-p" #'sbditto85/evil-previous-5-lines)
 
 (add-hook 'markdown-mode-hook
           (lambda ()
@@ -188,8 +198,8 @@ I want to be able to quickly add cursors below my current one if the changes lin
 
 (add-hook 'treemacs-mode-hook
           (lambda ()
-            (local-set-key (kbd "M-n") nil)
-            (local-set-key (kbd "M-p") nil)))
+            (local-set-key (kbd "M-n") #'sbditto85/evil-next-5-lines)
+            (local-set-key (kbd "M-p") #'sbditto85/evil-previous-5-lines)))
 
 (map! :desc "Down (insert mode)" :i "C-n" #'evil-next-line)
 (map! :desc "Up (insert mode)" :i "C-p" #'evil-previous-line)
