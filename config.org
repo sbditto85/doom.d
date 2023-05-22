@@ -208,7 +208,7 @@ I want to be able to quickly add cursors below my current one if the changes lin
   (let ((projects-path (sbditto85/projects-path))
         )
     (when projects-path
-      (setq projectile-project-search-path projects-path)
+      (setq projectile-project-search-path (split-string projects-path))
       )
     )
   )
