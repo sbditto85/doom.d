@@ -186,6 +186,11 @@ I want to be able to quickly add cursors below my current one if the changes lin
             (local-set-key (kbd "M-n") nil)
             (local-set-key (kbd "M-p") nil)))
 
+(add-hook 'treemacs-mode-hook
+          (lambda ()
+            (local-set-key (kbd "M-n") nil)
+            (local-set-key (kbd "M-p") nil)))
+
 (map! :desc "Down (insert mode)" :i "C-n" #'evil-next-line)
 (map! :desc "Up (insert mode)" :i "C-p" #'evil-previous-line)
 #+end_src
