@@ -17,6 +17,7 @@
   - [[#path][Path]]
   - [[#search-all-projects][Search all projects]]
 - [[#dired][Dired]]
+- [[#sharing-or-solo-mode][Sharing or Solo mode]]
 
 * Doom Default Stuff
 $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -238,4 +239,25 @@ I want to be able to quickly add cursors below my current one if the changes lin
    (kbd "h") 'dired-up-directory
    (kbd "l") 'dired-find-file
    )
+#+end_src
+
+* Sharing or Solo mode
+
+ When sharing with others the font size should be larger so its easier for them to read. When I'm solo I don't mind having the font be a bit smaller
+#+begin_src elisp :tangle yes
+(defun set-sharing ()
+  (interactive)
+  (set-face-attribute 'default nil :height 185)
+  (setq magit-status-headers-hook
+        '(magit-insert-error-header magit-insert-diff-filter-header magit-insert-head-branch-header))
+  )
+
+(defun set-solo ()
+  (interactive)
+  (set-face-attribute 'default nil :height 150)
+  (setq magit-status-headers-hook
+        '(magit-insert-error-header magit-insert-diff-filter-header magit-insert-head-branch-header magit-insert-upstream-branch-header magit-insert-push-branch-header magit-insert-tags-header))
+  )
+
+(set-solo)
 #+end_src
