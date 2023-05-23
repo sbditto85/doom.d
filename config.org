@@ -261,19 +261,19 @@ I want to be able to quickly add cursors below my current one if the changes lin
 
  When sharing with others the font size should be larger so its easier for them to read. When I'm solo I don't mind having the font be a bit smaller
 #+begin_src elisp :tangle yes
-(defun set-sharing ()
+(defun sbditto85/set-sharing ()
   (interactive)
   (set-face-attribute 'default nil :height 185)
   (setq magit-status-headers-hook
         '(magit-insert-error-header magit-insert-diff-filter-header magit-insert-head-branch-header))
   )
 
-(defun set-solo ()
+(defun sbditto85/set-solo ()
   (interactive)
   (set-face-attribute 'default nil :height 150)
   (setq magit-status-headers-hook
         '(magit-insert-error-header magit-insert-diff-filter-header magit-insert-head-branch-header magit-insert-upstream-branch-header magit-insert-push-branch-header magit-insert-tags-header))
   )
 
-(set-solo)
+(sbditto85/set-solo)
 #+end_src
