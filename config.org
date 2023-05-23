@@ -236,7 +236,8 @@ I want to be able to quickly add cursors below my current one if the changes lin
 #+begin_src elisp :tangle yes
 (defun sbditto85/search-projects ()
   (interactive)
-  (let ((default-directory (sbditto85/projects-path)))
+  (let ((default-directory (nth 0 (split-string (sbditto85/projects-path))))
+        )
     (call-interactively
      (cond ((modulep! :completion ivy)     #'+ivy/project-search-from-cwd)
            ((modulep! :completion helm)    #'+helm/project-search-from-cwd)
