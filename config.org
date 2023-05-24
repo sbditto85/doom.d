@@ -186,28 +186,36 @@ I want to be able to quickly add cursors below my current one if the changes lin
   (evil-previous-line 5)
   )
 
-(map! :desc "Five lines down" :n "M-n" #'sbditto85/evil-next-5-lines)
-(map! :desc "Five lines down" :i "M-n" #'sbditto85/evil-next-5-lines)
-(map! :desc "Five lines up" :n "M-p" #'sbditto85/evil-previous-5-lines)
-(map! :desc "Five lines up" :i "M-p" #'sbditto85/evil-previous-5-lines)
+(map! :desc "Five lines down" :n "M-j" #'sbditto85/evil-next-5-lines)
+(map! :desc "Five lines down" :i "M-j" #'sbditto85/evil-next-5-lines)
+(map! :desc "Five lines up" :n "M-k" #'sbditto85/evil-previous-5-lines)
+(map! :desc "Five lines up" :i "M-k" #'sbditto85/evil-previous-5-lines)
 
 (add-hook 'markdown-mode-hook
           (lambda ()
-            (local-set-key (kbd "M-n") nil)
-            (local-set-key (kbd "M-p") nil)))
+            (local-set-key (kbd "M-j") nil)
+            (local-set-key (kbd "M-k") nil)))
 
 (add-hook 'treemacs-mode-hook
           (lambda ()
-            (local-set-key (kbd "M-n") #'sbditto85/evil-next-5-lines)
-            (local-set-key (kbd "M-p") #'sbditto85/evil-previous-5-lines)))
+            (local-set-key (kbd "M-j") #'sbditto85/evil-next-5-lines)
+            (local-set-key (kbd "M-k") #'sbditto85/evil-previous-5-lines)))
 
-(map! :desc "Down (insert mode)" :i "C-n" #'evil-next-line)
-(map! :desc "Up (insert mode)" :i "C-p" #'evil-previous-line)
+(map! :desc "Down (insert mode)" :i "C-j" #'evil-next-line)
+(map! :desc "Up (insert mode)" :i "C-k" #'evil-previous-line)
 #+end_src
 
 * Window numbering
 #+begin_src elisp :tangle yes
 (window-numbering-mode 1)
+#+end_src
+
+* Searching
+
+Search with swiper in buffer
+#+begin_src elisp :tangle yes
+(map! :desc "Search with Swiper" :n "C-s" #'+default/search-buffer)
+(map! :desc "Search with Swiper" :i "C-s" #'+default/search-buffer)
 #+end_src
 
 * Projectile
