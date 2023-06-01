@@ -14,6 +14,9 @@
   - [[#cursor-on-next-line][Cursor on next line]]
 - [[#movement][Movement]]
 - [[#window-numbering][Window numbering]]
+- [[#searching][Searching]]
+- [[#workspaces][Workspaces]]
+  - [[#dont-open-one-when-switching-projects][Don't open one when switching projects]]
 - [[#projectile][Projectile]]
   - [[#path][Path]]
   - [[#search-all-projects][Search all projects]]
@@ -227,6 +230,14 @@ Search with swiper in buffer
 #+begin_src elisp :tangle yes
 (map! :desc "Search with Swiper" :n "C-s" #'+default/search-buffer)
 (map! :desc "Search with Swiper" :i "C-s" #'+default/search-buffer)
+#+end_src
+
+* Workspaces
+
+** Don't open one when switching projects
+
+#+begin_src elisp :tangle yes
+(setq +workspaces-on-switch-project-behavior nil)
 #+end_src
 
 * Projectile
