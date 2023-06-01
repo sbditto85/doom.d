@@ -293,16 +293,34 @@ Search with swiper in buffer
 #+begin_src elisp :tangle yes
 (defun sbditto85/set-sharing ()
   (interactive)
+
+  ;; Set the font size
   (set-face-attribute 'default nil :height 185)
+
+  ;; Setup magit to hide confusing data
   (setq magit-status-headers-hook
         '(magit-insert-error-header magit-insert-diff-filter-header magit-insert-head-branch-header))
+
+  ;; Set line numbering to be "normal"
+  (setq display-line-numbers-type t)
+  (global-display-line-numbers-mode -1)
+  (global-display-line-numbers-mode 1)
   )
 
 (defun sbditto85/set-solo ()
   (interactive)
+
+  ;; Set the font size
   (set-face-attribute 'default nil :height 150)
+
+  ;; Setup magit status to have more data
   (setq magit-status-headers-hook
         '(magit-insert-error-header magit-insert-diff-filter-header magit-insert-head-branch-header magit-insert-upstream-branch-header magit-insert-push-branch-header magit-insert-tags-header))
+
+  ;; Set line numbering to be relative
+  (setq display-line-numbers-type 'relative)
+  (global-display-line-numbers-mode -1)
+  (global-display-line-numbers-mode 1)
   )
 
 (sbditto85/set-solo)
