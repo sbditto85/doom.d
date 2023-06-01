@@ -3,6 +3,7 @@
 
 * Table of Contents :toc:
 - [[#doom-default-stuff][Doom Default Stuff]]
+- [[#deleting-files][Deleting files]]
 - [[#magit-split][Magit split]]
 - [[#whitespace-mode][Whitespace mode]]
 - [[#time][Time]]
@@ -103,6 +104,16 @@ etc).
 
 You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 they are implemented.
+
+
+* Deleting files
+
+Rather than sending to a recycling bin, just delete the files. I usually have git as a way of retrieving lost data
+
+#+begin_src elisp :tangle yes
+(setq delete-by-moving-to-trash nil)
+(setq magit-delete-by-moving-to-trash nil)
+#+end_src
 
 * Magit split
 
