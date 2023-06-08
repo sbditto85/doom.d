@@ -4,6 +4,7 @@
 * Table of Contents :toc:
 - [[#doom-default-stuff][Doom Default Stuff]]
 - [[#deleting-files][Deleting files]]
+- [[#magit-diff-width][Magit diff width]]
 - [[#magit-split][Magit split]]
 - [[#whitespace-mode][Whitespace mode]]
 - [[#time][Time]]
@@ -116,6 +117,13 @@ Rather than sending to a recycling bin, just delete the files. I usually have gi
 #+begin_src elisp :tangle yes
 (setq delete-by-moving-to-trash nil)
 (setq magit-delete-by-moving-to-trash nil)
+#+end_src
+
+* Magit diff width
+
+Attempting to have the diff show the full width and not truncate the file names ... we shall see
+#+begin_src elisp :tangle yes
+(setq magit-diff-extra-stat-arguments 'magit-diff-use-window-width-as-stat-width)
 #+end_src
 
 * Magit split
