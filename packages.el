@@ -56,3 +56,7 @@
 (package! envrc)
 (package! ripgrep)
 (package! typescript-mode)
+
+;;(package! multi-vterm)
+
+(package! evil-ruby-text-objects)

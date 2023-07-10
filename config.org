@@ -24,6 +24,7 @@
   - [[#search-all-projects][Search all projects]]
 - [[#dired][Dired]]
 - [[#sharing-or-solo-mode][Sharing or Solo mode]]
+- [[#ruby][Ruby]]
 
 * Doom Default Stuff
 $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -343,4 +344,10 @@ Search with swiper in buffer
   )
 
 (sbditto85/set-solo)
+#+end_src
+
+* Ruby
+
+#+begin_src elisp :tangle yes
+(add-hook 'ruby-mode-hook 'evil-ruby-text-objects-mode)
 #+end_src
