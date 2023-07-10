@@ -257,7 +257,7 @@ Search with swiper in buffer
 ** Don't open one when switching projects
 
 #+begin_src elisp :tangle yes
-(setq +workspaces-on-switch-project-behavior nil)
+;; (setq +workspaces-on-switch-project-behavior nil)
 #+end_src
 
 * Projectile
