@@ -7,6 +7,7 @@
 - [[#magit-diff-width][Magit diff width]]
 - [[#magit-split][Magit split]]
 - [[#whitespace-mode][Whitespace mode]]
+  - [[#trim-lines-with-only-spaces-from-a-file][Trim lines with only spaces from a file]]
 - [[#time][Time]]
 - [[#comments][Comments]]
 - [[#tree-view][Tree view]]
@@ -139,6 +140,15 @@ Attempting to have the diff show the full width and not truncate the file names 
 #+begin_src elisp :tangle yes
 (global-whitespace-mode +1)
 (setq whitespace-style '(face indentation trailing))
+#+end_src
+
+** Trim lines with only spaces from a file
+
+#+begin_src elisp :tangle yes
+(defun sbditto85/remove-space-lines ()
+  (interactive)
+  (evil-ex "%s/^ +$//")
+  )
 #+end_src
 
 * Time
