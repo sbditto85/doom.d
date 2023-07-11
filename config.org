@@ -15,6 +15,8 @@
   - [[#highlight-select][Highlight select]]
   - [[#cursor-on-next-line][Cursor on next line]]
 - [[#movement][Movement]]
+- [[#character-manipulation][Character manipulation]]
+  - [[#transpose-two-characters][Transpose two characters]]
 - [[#window-numbering][Window numbering]]
 - [[#searching][Searching]]
 - [[#workspaces][Workspaces]]
@@ -191,6 +193,7 @@ Attempting to have the diff show the full width and not truncate the file names 
 ;; SPC o p to toggle treemacs open and closed
 (map! :leader :desc "Toogle select treemacs" :n "w SPC" #'treemacs-select-window)
 #+end_src
+
 * Multiple Cursors
 
 ** Highlight select
@@ -239,7 +242,17 @@ I want to be able to quickly add cursors below my current one if the changes lin
 (map! :desc "Up (insert mode)" :i "C-k" #'evil-previous-line)
 #+end_src
 
+* Character manipulation
+
+** Transpose two characters
+
+#+begin_src elisp :tangle yes
+(map! :desc "Transpose/swap characters" :n "C-t" #'transpose-chars)
+(map! :desc "Transpose/swap characters" :i "C-t" #'transpose-chars)
+#+end_src
+
 * Window numbering
+
 #+begin_src elisp :tangle yes
 (window-numbering-mode 1)
 #+end_src
