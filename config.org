@@ -148,7 +148,7 @@ Attempting to have the diff show the full width and not truncate the file names 
 ** Trim lines with only spaces from a file
 
 #+begin_src elisp :tangle yes
-(defun sbditto85/remove-space-lines ()
+(defun custom/remove-space-lines ()
   (interactive)
   (evil-ex "%s/^ +$//")
   )
@@ -156,14 +156,14 @@ Attempting to have the diff show the full width and not truncate the file names 
 
 * Time
 #+begin_src elisp :tangle yes
-(defun sbditto85/append-date-time ()
+(defun custom/append-date-time ()
   (interactive)
   (evil-append 0)
   (insert (format-time-string "%a %b %d %Y")))
 
-(map! :leader :desc "Insert current time" :n "d" #'sbditto85/append-date-time)
+(map! :leader :desc "Insert current time" :n "d" #'custom/append-date-time)
 
-(defun sbditto85/insert-date-time ()
+(defun custom/insert-date-time ()
   (interactive)
   (evil-append 0)
   (insert (format-time-string "%a %b %d %Y")))
@@ -171,21 +171,21 @@ Attempting to have the diff show the full width and not truncate the file names 
 
 * Comments
 #+begin_src elisp :tangle yes
-(defun sbditto85/author ()
+(defun custom/author ()
   (let ((env-author (getenv "AUTHOR")))
     (if env-author
         env-author
-        "sbditto85")
+        "custom")
     )
   )
-(defun sbditto85/comment-attribution ()
+(defun custom/comment-attribution ()
   (interactive)
   (evil-append 0)
-  (insert " - " (sbditto85/author) ", ")
-  (sbditto85/insert-date-time)
+  (insert " - " (custom/author) ", ")
+  (custom/insert-date-time)
   )
 
-(map! :leader :desc "Attribute comment" :n "c a" #'sbditto85/comment-attribution)
+(map! :leader :desc "Attribute comment" :n "c a" #'custom/comment-attribution)
 #+end_src
 
 * Tree view
@@ -213,20 +213,20 @@ I want to be able to quickly add cursors below my current one if the changes lin
 * Movement
 
 #+begin_src elisp :tangle yes
-(defun sbditto85/evil-next-5-lines ()
+(defun custom/evil-next-5-lines ()
   (interactive)
   (evil-next-line 5)
   )
 
-(defun sbditto85/evil-previous-5-lines ()
+(defun custom/evil-previous-5-lines ()
   (interactive)
   (evil-previous-line 5)
   )
 
-(map! :desc "Five lines down" :n "M-j" #'sbditto85/evil-next-5-lines)
-(map! :desc "Five lines down" :i "M-j" #'sbditto85/evil-next-5-lines)
-(map! :desc "Five lines up" :n "M-k" #'sbditto85/evil-previous-5-lines)
-(map! :desc "Five lines up" :i "M-k" #'sbditto85/evil-previous-5-lines)
+(map! :desc "Five lines down" :n "M-j" #'custom/evil-next-5-lines)
+(map! :desc "Five lines down" :i "M-j" #'custom/evil-next-5-lines)
+(map! :desc "Five lines up" :n "M-k" #'custom/evil-previous-5-lines)
+(map! :desc "Five lines up" :i "M-k" #'custom/evil-previous-5-lines)
 
 (add-hook 'markdown-mode-hook
           (lambda ()
@@ -235,8 +235,8 @@ I want to be able to quickly add cursors below my current one if the changes lin
 
 (add-hook 'treemacs-mode-hook
           (lambda ()
-            (local-set-key (kbd "M-j") #'sbditto85/evil-next-5-lines)
-            (local-set-key (kbd "M-k") #'sbditto85/evil-previous-5-lines)))
+            (local-set-key (kbd "M-j") #'custom/evil-next-5-lines)
+            (local-set-key (kbd "M-k") #'custom/evil-previous-5-lines)))
 
 (map! :desc "Down (insert mode)" :i "C-j" #'evil-next-line)
 (map! :desc "Up (insert mode)" :i "C-k" #'evil-previous-line)
@@ -277,13 +277,13 @@ Search with swiper in buffer
 ** Path
 
 #+begin_src elisp :tangle yes
-(defun sbditto85/projects-path ()
+(defun custom/projects-path ()
   (getenv "PROJECTS_PATH")
   )
 
-(defun sbditto85/set-projectile-project-path ()
+(defun custom/set-projectile-project-path ()
   (interactive)
-  (let ((projects-path (sbditto85/projects-path))
+  (let ((projects-path (custom/projects-path))
         )
     (when projects-path
       (setq projectile-project-search-path (split-string projects-path))
@@ -291,15 +291,15 @@ Search with swiper in buffer
     )
   )
 
-(sbditto85/set-projectile-project-path)
+(custom/set-projectile-project-path)
 #+end_src
 
 ** Search all projects
 
 #+begin_src elisp :tangle yes
-(defun sbditto85/search-projects ()
+(defun custom/search-projects ()
   (interactive)
-  (let ((default-directory (nth 0 (split-string (sbditto85/projects-path))))
+  (let ((default-directory (nth 0 (split-string (custom/projects-path))))
         )
     (call-interactively
      (cond ((modulep! :completion ivy)     #'+ivy/project-search-from-cwd)
@@ -308,7 +308,7 @@ Search with swiper in buffer
            (#'rgrep))))
   )
 
-(map! :leader :desc "Search Projects" :n "s P" #'sbditto85/search-projects)
+(map! :leader :desc "Search Projects" :n "s P" #'custom/search-projects)
 #+end_src
 
 * Dired
@@ -324,7 +324,7 @@ Search with swiper in buffer
 
  When sharing with others the font size should be larger so its easier for them to read. When I'm solo I don't mind having the font be a bit smaller
 #+begin_src elisp :tangle yes
-(defun sbditto85/set-sharing ()
+(defun custom/set-sharing ()
   (interactive)
 
   ;; Set the font size
@@ -340,7 +340,7 @@ Search with swiper in buffer
   (global-display-line-numbers-mode 1)
   )
 
-(defun sbditto85/set-solo ()
+(defun custom/set-solo ()
   (interactive)
 
   ;; Set the font size
@@ -356,7 +356,7 @@ Search with swiper in buffer
   (global-display-line-numbers-mode 1)
   )
 
-(sbditto85/set-solo)
+(custom/set-solo)
 #+end_src
 
 * Ruby
