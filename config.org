@@ -351,7 +351,8 @@ Search with swiper in buffer
         '(magit-insert-error-header magit-insert-diff-filter-header magit-insert-head-branch-header magit-insert-upstream-branch-header magit-insert-push-branch-header magit-insert-tags-header))
 
   ;; Set line numbering to be relative
-  (setq display-line-numbers-type 'relative)
+  ;; (setq display-line-numbers-type 'relative)
+  (setq display-line-numbers-type t)
   (global-display-line-numbers-mode -1)
   (global-display-line-numbers-mode 1)
   )
