@@ -27,6 +27,7 @@
 - [[#dired][Dired]]
 - [[#sharing-or-solo-mode][Sharing or Solo mode]]
 - [[#ruby][Ruby]]
+  - [[#compilation][Compilation]]
 
 * Doom Default Stuff
 $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -55,7 +56,7 @@ See 'C-h v doom-font' for documentation and more examples of what they
 accept. For example:
 
 setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
-     doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
+doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 
 If you or Emacs can't find your font, use 'M-x describe-font' to look them
 up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -84,15 +85,15 @@ change `org-directory'. It must be set before org loads!
 Whenever you reconfigure a package, make sure to wrap your config in an
 `after!' block, otherwise Doom's defaults may override your settings. E.g.
 
-  (after! PACKAGE
-    (setq x y))
+(after! PACKAGE
+(setq x y))
 
 The exceptions to this rule:
 
-  - Setting file/directory variables (like `org-directory')
-  - Setting variables which explicitly tell you to set them before their
-    package is loaded (see 'C-h v VARIABLE' to look up their documentation).
-  - Setting doom variables (which start with 'doom-' or '+').
+- Setting file/directory variables (like `org-directory')
+- Setting variables which explicitly tell you to set them before their
+  package is loaded (see 'C-h v VARIABLE' to look up their documentation).
+- Setting doom variables (which start with 'doom-' or '+').
 
 Here are some additional functions/macros that will help you configure Doom.
 
@@ -175,7 +176,7 @@ Attempting to have the diff show the full width and not truncate the file names 
   (let ((env-author (getenv "AUTHOR")))
     (if env-author
         env-author
-        "custom")
+      "custom")
     )
   )
 (defun custom/comment-attribution ()
@@ -314,15 +315,15 @@ Search with swiper in buffer
 * Dired
 
 #+begin_src elisp :tangle yes
- (evil-define-key 'normal dired-mode-map
-   (kbd "h") 'dired-up-directory
-   (kbd "l") 'dired-find-file
-   )
+(evil-define-key 'normal dired-mode-map
+  (kbd "h") 'dired-up-directory
+  (kbd "l") 'dired-find-file
+  )
 #+end_src
 
 * Sharing or Solo mode
 
- When sharing with others the font size should be larger so its easier for them to read. When I'm solo I don't mind having the font be a bit smaller
+When sharing with others the font size should be larger so its easier for them to read. When I'm solo I don't mind having the font be a bit smaller
 #+begin_src elisp :tangle yes
 (defun custom/set-sharing ()
   (interactive)
@@ -364,4 +365,58 @@ Search with swiper in buffer
 
 #+begin_src elisp :tangle yes
 (add-hook 'ruby-mode-hook 'evil-ruby-text-objects-mode)
+#+end_src
+
+** Compilation
+
+#+begin_src elisp :tangle no
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (set (make-local-variable 'compile-command)
+                 (concat "ruby " buffer-file-name))
+            (set (make-local-variable 'compilation-read-command) nil)
+            )
+          )
+#+end_src
+
+*** Aaron's config
+
+#+begin_src elisp :tangle no
+
+(use-feature ruby-mode
+             :config
+             (defun aj-eval-ruby (detail)
+               "Eval the current ruby file."
+               (interactive "P")
+               (when (buffer-file-name)
+                 (save-buffer)
+
+                 (let* ((default-directory (aj-project-root))
+                        (env "RUBYOPT='-W:no-deprecated -W:no-experimental'")
+                        (env (if detail
+                                 (concat "TEST_BENCH_DETAIL=on " env)
+                               env))
+                        (relative-file-name (file-relative-name buffer-file-name default-directory))
+                        (command (concat env " ruby " (shell-quote-argument relative-file-name)))
+                        (compilation-scroll-output 'first-error))
+                   (compilation-start command 'ruby-compilation-mode))))
+
+             (leader-key-set-for-major-mode 'ruby-mode
+                                            "e" #'aj-eval-ruby)
+
+             (after evil
+                    (evil-declare-abort-repeat #'aj-eval-ruby))
+
+             (add-hook 'compilation-shell-minor-mode-hook #'read-only-mode)
+             (add-hook 'compilation-shell-minor-mode-hook #'evil-motion-state)
+
+             (define-derived-mode ruby-compilation-mode compilation-mode "Ruby Compilation"
+               (setq-local compilation-error-regexp-alist '(ruby-testbench))))
+
+(use-feature compile
+             :config
+             (cl-pushnew '(ruby-testbench "[[:space:]]+\\([0-9A-za-z@_./:-]+\\.rb\\):\\([0-9]+\\):in" 1 2 nil 2 1)
+                         compilation-error-regexp-alist-alist)
+             (add-to-list 'compilation-error-regexp-alist 'ruby-testbench))
+
 #+end_src
