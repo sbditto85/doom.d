@@ -15,6 +15,7 @@
   - [[#highlight-select][Highlight select]]
   - [[#cursor-on-next-line][Cursor on next line]]
 - [[#movement][Movement]]
+  - [[#moving-code][Moving code]]
 - [[#character-manipulation][Character manipulation]]
   - [[#transpose-two-characters][Transpose two characters]]
 - [[#window-numbering][Window numbering]]
@@ -214,33 +215,23 @@ I want to be able to quickly add cursors below my current one if the changes lin
 * Movement
 
 #+begin_src elisp :tangle yes
-(defun custom/evil-next-5-lines ()
-  (interactive)
-  (evil-next-line 5)
-  )
-
-(defun custom/evil-previous-5-lines ()
-  (interactive)
-  (evil-previous-line 5)
-  )
-
-(map! :desc "Five lines down" :n "M-j" #'custom/evil-next-5-lines)
-(map! :desc "Five lines down" :i "M-j" #'custom/evil-next-5-lines)
-(map! :desc "Five lines up" :n "M-k" #'custom/evil-previous-5-lines)
-(map! :desc "Five lines up" :i "M-k" #'custom/evil-previous-5-lines)
-
-(add-hook 'markdown-mode-hook
-          (lambda ()
-            (local-set-key (kbd "M-j") nil)
-            (local-set-key (kbd "M-k") nil)))
-
-(add-hook 'treemacs-mode-hook
-          (lambda ()
-            (local-set-key (kbd "M-j") #'custom/evil-next-5-lines)
-            (local-set-key (kbd "M-k") #'custom/evil-previous-5-lines)))
-
 (map! :desc "Down (insert mode)" :i "C-j" #'evil-next-line)
 (map! :desc "Up (insert mode)" :i "C-k" #'evil-previous-line)
+#+end_src
+
+** Moving code
+
+#+begin_src elisp :tangle yes
+(global-move-dup-mode)
+
+(map! :desc "Move line(s) up" :n "J" #'move-dup-move-lines-up)
+(map! :desc "Move line(s) down" :n "K" #'move-dup-move-lines-down)
+
+(map! :desc "Move line(s) up" :i "M-j" #'move-dup-move-lines-up)
+(map! :desc "Move line(s) down" : "M-k" #'move-dup-move-lines-down)
+
+;; (map! :desc "Duplicate line(s) up" :nvi "J" #'move-dup-duplicate-up)
+;; (map! :desc "Duplicate line(s) down" :nvi "K" #'move-dup-duplicate-down)
 #+end_src
 
 * Character manipulation

@@ -56,6 +56,7 @@
 (package! envrc)
 (package! ripgrep)
 (package! typescript-mode)
+(package! move-dup)
 
 ;;(package! multi-vterm)
 
