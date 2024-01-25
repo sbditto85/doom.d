@@ -26,6 +26,7 @@
   - [[#path][Path]]
   - [[#search-all-projects][Search all projects]]
 - [[#dired][Dired]]
+- [[#file-finding][File Finding]]
 - [[#sharing-or-solo-mode][Sharing or Solo mode]]
 - [[#ruby][Ruby]]
   - [[#compilation][Compilation]]
@@ -310,6 +311,12 @@ Search with swiper in buffer
   (kbd "h") 'dired-up-directory
   (kbd "l") 'dired-find-file
   )
+#+end_src
+
+* File Finding
+
+#+begin_src elisp :tangle yes
+(map! :leader :desc "Find file at point" :n "f f" #'ffap)
 #+end_src
 
 * Sharing or Solo mode
