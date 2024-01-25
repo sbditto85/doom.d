@@ -26,6 +26,7 @@
   - [[#path][Path]]
   - [[#search-all-projects][Search all projects]]
 - [[#dired][Dired]]
+- [[#font][Font]]
 - [[#file-finding][File Finding]]
 - [[#sharing-or-solo-mode][Sharing or Solo mode]]
 - [[#ruby][Ruby]]
@@ -311,6 +312,17 @@ Search with swiper in buffer
   (kbd "h") 'dired-up-directory
   (kbd "l") 'dired-find-file
   )
+#+end_src
+
+* Font
+
+#+begin_src elisp :tangle yes
+(map! :leader
+      (:prefix-map ("e" . "editor")
+       :desc "Decrease font size"  "d"   #'doom/decrease-font-size
+       :desc "Increase font size"  "i"   #'doom/increase-font-size
+       :desc "Reset font size"     "r"   #'doom/reset-font-size
+       ))
 #+end_src
 
 * File Finding
