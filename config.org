@@ -163,15 +163,18 @@ Attempting to have the diff show the full width and not truncate the file names 
 (defun custom/append-date-time ()
   (interactive)
   (evil-append 0)
-  (insert (format-time-string "%a %b %d %Y")))
+  (insert (format-time-string "%a %b %-d %Y")))
 
 (map! :leader :desc "Insert current time" :n "d" #'custom/append-date-time)
 
 (defun custom/insert-date-time ()
   (interactive)
   (evil-append 0)
-  (insert (format-time-string "%a %b %d %Y")))
+  (insert (format-time-string "%a %b %-d %Y")))
 #+end_src
+
+#+RESULTS:
+: custom/insert-date-time
 
 * Comments
 #+begin_src elisp :tangle yes
