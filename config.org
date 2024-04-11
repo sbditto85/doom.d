@@ -24,6 +24,7 @@
 - [[#workspaces][Workspaces]]
   - [[#dont-open-one-when-switching-projects][Don't open one when switching projects]]
 - [[#projectile][Projectile]]
+  - [[#doom-mode-line][Doom Mode Line]]
   - [[#path][Path]]
   - [[#search-all-projects][Search all projects]]
 - [[#dired][Dired]]
@@ -286,6 +287,15 @@ Search with swiper in buffer
 #+end_src
 
 * Projectile
+** Doom Mode Line
+Set the mode line to show the project and then truncate the rest of the path until the file
+
+#+begin_src elisp :tangle yes
+
+(setq doom-modeline-buffer-file-name-style 'truncate-with-project)
+
+#+end_src
+
 ** Path
 
 #+begin_src elisp :tangle yes
