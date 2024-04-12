@@ -3,6 +3,7 @@
 
 * Table of Contents :toc:
 - [[#doom-default-stuff][Doom Default Stuff]]
+  - [[#doom-mode-line][Doom Mode Line]]
 - [[#deleting-files][Deleting files]]
 - [[#magit-diff-width][Magit diff width]]
 - [[#magit-split][Magit split]]
@@ -117,6 +118,14 @@ etc).
 You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 they are implemented.
 
+** Doom Mode Line
+Have the mode line truncate everything except the file
+
+#+begin_src elisp :tangle yes
+
+(setq doom-modeline-buffer-file-name-style 'truncate-with-project)
+
+#+end_src
 
 * Deleting files
 
