@@ -61,3 +61,5 @@
 ;;(package! multi-vterm)
 
 (package! evil-ruby-text-objects)
+
+(package! pinentry)
