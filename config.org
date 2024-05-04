@@ -32,6 +32,7 @@
 - [[#sharing-or-solo-mode][Sharing or Solo mode]]
 - [[#org-mode][Org Mode]]
   - [[#org-files-directory][Org Files Directory]]
+  - [[#org-mobile][Org Mobile]]
   - [[#capture-templates][Capture Templates]]
 - [[#ruby][Ruby]]
   - [[#compilation][Compilation]]
@@ -414,6 +415,20 @@ When sharing with others the font size should be larger so its easier for them t
 
 #+end_src
 
+** Org Mobile
+
+#+begin_src elisp :tangle yes
+
+(setq org-mobile-inbox-for-pull (concat (custom/org-files-directory) "inbox.org"))
+(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+
+(after! org
+  (map! :leader :desc "Org Mobile Push" :n "n o" #'org-mobile-push)
+  (map! :leader :desc "Org Mobile Pull" :n "n i" #'org-mobile-pull)
+  )
+
+#+end_src
+
 ** Capture Templates
 
 #+begin_src elisp :tangle yes
@@ -450,7 +465,6 @@ When sharing with others the font size should be larger so its easier for them t
       ;; ("mw" "Weight" table-line (file+headline "~/Projects/Code/emacs-from-scratch/OrgFiles/Metrics.org" "Weight")
       ;;  "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)
       )
-    )
   )
 
   ;; (define-key global-map (kbd "C-c j")
@@ -458,6 +472,7 @@ When sharing with others the font size should be larger so its easier for them t
   (map! :leader :desc "Task Inbox" :n "n t" (lambda () (interactive) (org-capture nil "tt")))
   (map! :leader :desc "Current Work Item Task" :n "n c" (lambda () (interactive) (org-capture nil "tc")))
   (map! :leader :desc "Personal Task" :n "n p" (lambda () (interactive) (org-capture nil "tp")))
+  )
 
 #+end_src
 
