@@ -36,6 +36,7 @@
   - [[#capture-templates][Capture Templates]]
 - [[#ruby][Ruby]]
   - [[#compilation][Compilation]]
+- [[#casing][Casing]]
 
 * Doom Default Stuff
 $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -533,5 +534,13 @@ When sharing with others the font size should be larger so its easier for them t
              (cl-pushnew '(ruby-testbench "[[:space:]]+\\([0-9A-za-z@_./:-]+\\.rb\\):\\([0-9]+\\):in" 1 2 nil 2 1)
                          compilation-error-regexp-alist-alist)
              (add-to-list 'compilation-error-regexp-alist 'ruby-testbench))
+
+#+end_src
+
+* Casing
+
+#+begin_src elisp
+
+  (map! :leader :desc "Ruby Casing Cycle" :n "t t" #'string-inflection-ruby-style-cycle)
 
 #+end_src

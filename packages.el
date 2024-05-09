@@ -63,3 +63,5 @@
 (package! evil-ruby-text-objects)
 
 (package! pinentry)
+(package! string-inflection)
+(package! evil-string-inflection)
