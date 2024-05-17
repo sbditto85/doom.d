@@ -37,6 +37,9 @@
 - [[#ruby][Ruby]]
   - [[#compilation][Compilation]]
 - [[#casing][Casing]]
+- [[#aarons-config][Aaron's config]]
+  - [[#ruby-mode][Ruby mode]]
+  - [[#people-tag][People tag]]
 
 * Doom Default Stuff
 $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -495,7 +498,18 @@ When sharing with others the font size should be larger so its easier for them t
           )
 #+end_src
 
-*** Aaron's config
+
+* Casing
+
+#+begin_src elisp
+
+  (map! :leader :desc "Ruby Casing Cycle" :n "t t" #'string-inflection-ruby-style-cycle)
+
+#+end_src
+
+* Aaron's config
+
+** Ruby mode
 
 #+begin_src elisp :tangle no
 
@@ -537,10 +551,84 @@ When sharing with others the font size should be larger so its easier for them t
 
 #+end_src
 
-* Casing
+** People tag
 
-#+begin_src elisp
+#+begin_src elisp :tangle no
 
-  (map! :leader :desc "Ruby Casing Cycle" :n "t t" #'string-inflection-ruby-style-cycle)
+(defun aj-work-log-people-self ()
+  (if (or (string= (aj-project-name) "work-logs")
+          (eq major-mode 'org-journal-mode))
+      "self"
+    "Aaron"))
 
+(defun aj-work-log-people-insert-self ()
+  (interactive)
+  (aj-work-log-people-insert (aj-work-log-people-self))
+  (aj-work-log-people-sort))
+
+(defun aj-work-log-people-sort ()
+  "Sort the people names, ensuring 'self' is last if present."
+  (interactive)
+  (beginning-of-line)
+  (when (re-search-forward "\\[people\\] \\(.*?\\)$" (line-end-position) t)
+    (let* ((people (match-string 1))
+           (people-list (save-match-data (split-string people ", " t " ")))
+           (sorted-people-list (sort people-list 'string<)))
+      (replace-match (concat "[people] " (string-join people-list ", ")))))
+  (end-of-line))
+
+(defun aj-work-log-people-insert (person)
+  "Insert a person into the [people] tag."
+  (interactive "sPerson: ")
+  (if (looking-back "\\[people\\] ")
+      (insert person)
+    (insert (concat ", " person))))
+
+(defun aj-work-log-people-backspace ()
+  "Delete to the previous comma or `]` in the [people] tag."
+  (interactive)
+  (save-excursion
+    (if (re-search-backward ", " (line-beginning-position) t)
+        (progn
+          (delete-region (match-beginning 0) (line-end-position)))
+      (when (re-search-backward "\\[people\\] " (line-beginning-position) t)
+        (delete-region (match-end 0) (line-end-position))))))
+
+(defhydra aj-work-log-people (:foreign-keys run)
+  "Insert names into [people] tag."
+  ("aa" (aj-work-log-people-insert-self) "Aaron" :exit t)
+  ("ad" (aj-work-log-people-insert "Annie") "Annie")
+  ("an" (aj-work-log-people-insert "Antoine") "Antoine")
+  ("ca" (aj-work-log-people-insert "Casey") "Casey")
+  ("cb" (aj-work-log-people-insert "Chris") "Chris")
+  ("cg" (aj-work-log-people-insert "Christina") "Christina")
+  ("da" (aj-work-log-people-insert "David") "David")
+  ("du" (aj-work-log-people-insert "Dustin") "Dustin")
+  ("et" (aj-work-log-people-insert "Ethan") "Ethan")
+  ("gr" (aj-work-log-people-insert "Grace") "Grace")
+  ("ka" (aj-work-log-people-insert "Kacey") "Kacey")
+  ("ke" (aj-work-log-people-insert "Kelly") "Kelly")
+  ("ma" (aj-work-log-people-insert "Matt") "Matt")
+  ("mi" (aj-work-log-people-insert "Miles") "Miles")
+  ("na" (aj-work-log-people-insert "Nathan") "Nathan")
+  ("ni" (aj-work-log-people-insert "Nick") "Nick")
+  ("sa" (aj-work-log-people-insert "Scott A") "Scott A")
+  ("sb" (aj-work-log-people-insert "Scott B") "Scott B")
+  ("sh" (aj-work-log-people-insert "Shaun") "Shaun")
+  ("st" (aj-work-log-people-insert "Stephen") "Stephen")
+  ("wa" (aj-work-log-people-insert "Walker") "Walker")
+  ("<return>" (aj-work-log-people-insert-self) "Aaron" :exit t)
+  ("<backspace>" (aj-work-log-people-backspace))
+  ("q" (aj-work-log-people-sort) "quit" :exit t)
+  ("C-g" (aj-work-log-people-sort) "quit" :hint nil :exit t)
+  ("<escape>" (aj-work-log-people-sort) "quit" :hint nil :exit t)
+  ("," aj-work-log-people-insert "Other"))
+
+(defun aj-work-log-people ()
+  "Insert a [people] tag."
+  (interactive)
+  (insert "[people] ")
+  (aj-work-log-people/body))
+
+(define-key markdown-mode-map (kbd "C-c C-p") #'aj-work-log-people)
 #+end_src
