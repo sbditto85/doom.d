@@ -218,6 +218,8 @@ Attempting to have the diff show the full width and not truncate the file names 
 #+begin_src elisp :tangle yes
 ;; SPC o p to toggle treemacs open and closed
 (map! :leader :desc "Toogle select treemacs" :n "w SPC" #'treemacs-select-window)
+
+(setq treemacs-wrap-around nil)
 #+end_src
 
 * Multiple Cursors
