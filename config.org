@@ -220,6 +220,10 @@ Attempting to have the diff show the full width and not truncate the file names 
 (map! :leader :desc "Toogle select treemacs" :n "w SPC" #'treemacs-select-window)
 
 (setq treemacs-wrap-around nil)
+
+(after! treemacs
+  (treemacs-follow-mode t)
+  )
 #+end_src
 
 * Multiple Cursors
