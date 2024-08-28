@@ -3,6 +3,7 @@
 
 * Table of Contents :toc:
 - [[#doom-default-stuff][Doom Default Stuff]]
+- [[#display][Display]]
 - [[#deleting-files][Deleting files]]
 - [[#magit-diff-width][Magit diff width]]
 - [[#magit-split][Magit split]]
@@ -125,6 +126,43 @@ etc).
 
 You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 they are implemented.
+
+* Display
+
+#+begin_src elisp :tangle yes
+(setq default-frame-alist
+  (append
+    (list
+      '(inhibit-double-buffering . t)
+      )
+      default-frame-alist
+    )
+  )
+#+end_src
+
+Aaron send a block of example code to show demonstrate setting `inhibit-double-buffering` to prevent screen fragments
+#+begin_src elisp :tangle no
+(setq default-frame-alist
+      (append
+       (list
+        `(font . ,(concat aj-fixed-font "-" (number-to-string aj-fixed-font-default-size)))
+        '(min-height . 1) '(height . 45)
+        '(min-width . 1) '(width . 81)
+        '(vertical-scroll-bars . nil)
+        '(internal-border-width . 0)
+        '(left-fringe . 16)
+        '(right-fringe . 16)
+        '(tool-bar-lines . 0)
+        '(menu-bar-lines . 0)
+        '(undecorated-round . t)
+        '(inhibit-double-buffering . t)
+        ;; ns-auto-titlebar will take care of this for any other frames and when
+        ;; switching to a dark theme, but this is set here to avoid loading
+        ;; ns-auto-titlebar on init
+        '(ns-transparent-titlebar . t)
+        '(ns-appearance . light))
+       default-frame-alist))
+#+end_src
 
 * Deleting files
 
