@@ -528,6 +528,12 @@ When sharing with others the font size should be larger so its easier for them t
 
 #+begin_src elisp :tangle yes
 (add-hook 'ruby-mode-hook 'evil-ruby-text-objects-mode)
+
+(setq ruby-block-indent nil
+      ruby-method-call-indent nil
+      ruby-method-params-indent nil
+      ruby-after-operator-indent nil
+      ruby-bracketed-args-indent nil)
 #+end_src
 
 ** Compilation
@@ -554,6 +560,17 @@ When sharing with others the font size should be larger so its easier for them t
 * Aaron's config
 
 ** Ruby mode
+
+For Emacs 30 to have better auto indention of ruby code blocks
+#+begin_src elisp :tangle no
+
+(setq ruby-block-indent nil
+      ruby-method-call-indent nil
+      ruby-method-params-indent nil
+      ruby-after-operator-indent nil
+      ruby-bracketed-args-indent nil)
+
+#+end_src
 
 #+begin_src elisp :tangle no
 
