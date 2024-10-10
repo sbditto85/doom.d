@@ -30,6 +30,7 @@
 - [[#dired][Dired]]
 - [[#font][Font]]
 - [[#file-finding][File Finding]]
+  - [[#switch-buffer-list][Switch Buffer List]]
 - [[#sharing-or-solo-mode][Sharing or Solo mode]]
 - [[#org-mode][Org Mode]]
   - [[#org-files-directory][Org Files Directory]]
@@ -404,6 +405,27 @@ Set the mode line to show the project and then truncate the rest of the path unt
 
 #+begin_src elisp :tangle yes
 (map! :leader :desc "Find file at point" :n "f f" #'ffap)
+#+end_src
+
+** Switch Buffer List
+
+#+begin_src elisp :tangle yes
+(after! ivy-rich
+  (ivy-rich-set-columns
+   'ivy-switch-buffer
+   '((ivy-switch-buffer-transformer (:width 0.2))
+     (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+     (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))
+     (ivy-rich-switch-buffer-path
+      (:width
+       (lambda (x)
+         (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.7))
+         )
+       )
+      )
+     )
+   )
+  )
 #+end_src
 
 * Sharing or Solo mode
