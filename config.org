@@ -16,8 +16,6 @@
   - [[#highlight-select][Highlight select]]
   - [[#cursor-on-next-line][Cursor on next line]]
 - [[#movement][Movement]]
-- [[#character-manipulation][Character manipulation]]
-  - [[#transpose-two-characters][Transpose two characters]]
 - [[#window-numbering][Window numbering]]
 - [[#searching][Searching]]
 - [[#workspaces][Workspaces]]
@@ -285,15 +283,6 @@ I want to be able to quickly add cursors below my current one if the changes lin
 #+begin_src elisp :tangle yes
 (map! :desc "Down (insert mode)" :i "C-j" #'evil-next-line)
 (map! :desc "Up (insert mode)" :i "C-k" #'evil-previous-line)
-#+end_src
-
-* Character manipulation
-
-** Transpose two characters
-
-#+begin_src elisp :tangle yes
-(map! :desc "Transpose/swap characters" :n "C-t" #'transpose-chars)
-(map! :desc "Transpose/swap characters" :i "C-t" #'transpose-chars)
 #+end_src
 
 * Window numbering
