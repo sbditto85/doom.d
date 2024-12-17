@@ -36,6 +36,7 @@
 - [[#ruby][Ruby]]
   - [[#compilation][Compilation]]
 - [[#casing][Casing]]
+- [[#running-tests][Running tests]]
 - [[#aarons-config][Aaron's config]]
   - [[#ruby-mode][Ruby mode]]
   - [[#people-tag][People tag]]
@@ -546,9 +547,43 @@ When sharing with others the font size should be larger so its easier for them t
 
 * Casing
 
-#+begin_src elisp
+#+begin_src elisp :tangle yes
 
   (map! :leader :desc "Ruby Casing Cycle" :n "t t" #'string-inflection-ruby-style-cycle)
+
+#+end_src
+
+* Running tests
+
+You can call ==vterm-send-string== when the current buffer is in ==vterm-mode==, which if you include a "\n" it will "hit enter" as if you were typing commands
+
+#+begin_src elisp :tangle yes
+
+  (defun custom/test-component-project ()
+    (interactive)
+    (if (equal current-prefix-arg nil)
+        (custom/split-with-process "ct")
+        (custom/split-with-process "s && ct")
+      ))
+
+  (defun custom/test-web-project ()
+    (interactive)
+    (if (equal current-prefix-arg nil)
+        (custom/split-with-process "rs")
+        (custom/split-with-process "s && rs")
+      ))
+
+  (defun custom/split-with-process (command)
+    (let ((test-buffer (generate-new-buffer "*testing*"))
+          (process-buffer (generate-new-buffer "*process*")))
+      (switch-to-buffer process-buffer)
+      (vterm-mode)
+      (vterm-send-string command)
+      (vterm-send-return)
+      (split-window-right)
+      (switch-to-buffer test-buffer)
+      (vterm-mode)
+      ))
 
 #+end_src
 
