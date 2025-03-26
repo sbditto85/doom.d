@@ -40,6 +40,7 @@
 - [[#aarons-config][Aaron's config]]
   - [[#ruby-mode][Ruby mode]]
   - [[#people-tag][People tag]]
+- [[#experimental-header-line-format][Experimental header-line-format]]
 
 * Doom Default Stuff
 $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -722,4 +723,149 @@ For Emacs 30 to have better auto indention of ruby code blocks
   (aj-work-log-people/body))
 
 (define-key markdown-mode-map (kbd "C-c C-p") #'aj-work-log-people)
+#+end_src
+
+* Experimental header-line-format
+
+Generated this with Claude using the prompt "Can you generate a header-line-format that will show the current file name, project name on the right and then the point location to the right side?" after asking it questions to learn about the ==header-line-format==
+
+#+begin_src elisp :tangle yes
+(defun my/project-name ()
+  "Get the current project name."
+  (when (fboundp 'project-current)
+    (let ((project (project-current)))
+      (when project
+        (file-name-nondirectory
+         (directory-file-name
+          (project-root project)))))))
+
+;; (defun my/header-line-format ()
+;;   "Create a custom header line format."
+;;   (let* ((file-name (or (buffer-file-name) (buffer-name)))
+;;          (short-file-name (file-name-nondirectory file-name))
+;;          (project-name (my/project-name))
+;;          (point-info (format "L%d C%d" (line-number-at-pos) (current-column)))
+
+;;          ;; Calculate padding for centered project name
+;;          (total-width (window-total-width))
+;;          (project-padding (make-string
+;;                            (max 0 (/ (- total-width (length project-name)) 2))
+;;                            ? )))
+
+;;     (format-mode-line '(buffer-file-name "%f" "%b"))
+
+;;     ;; (format-mode-line
+;;     ;;  `(:eval
+;;     ;;    (list
+;;     ;;     ;; Left: File name
+;;     ;;     ,(propertize
+;;     ;;       (concat short-file-name
+;;     ;;               (when (buffer-modified-p) " *"))
+;;     ;;       'face 'font-lock-keyword-face)
+
+;;     ;;     ;; Center: Project name (with padding)
+;;     ;;     ,(when project-name
+;;     ;;        (propertize
+;;     ;;         (concat project-padding project-name)
+;;     ;;         'face 'font-lock-constant-face))
+
+;;     ;;     ;; Right-aligned: Point location
+;;     ;;     (:align-to (+ right 0))
+;;     ;;     ,(propertize
+;;     ;;       point-info
+;;     ;;       'face 'font-lock-comment-face))))
+;;     ))
+
+;; (defun my/header-line-format ()
+;;   "Create a custom header line format."
+;;   (let* ((file-name (or (buffer-file-name) (buffer-name)))
+;;          (short-file-name (file-name-nondirectory file-name))
+;;          (project-name (my/project-name))
+;;          (point-info (format "L%d C%d" (line-number-at-pos) (current-column)))
+;;          (modified (if (buffer-modified-p) "*" "")))
+
+;;     (format-mode-line
+;;      (list
+;;       ;; Left: File name with modification indicator
+;;       (propertize (format "%s%s" short-file-name modified) 'face 'font-lock-keyword-face)
+
+;;       ;; Center: Project name (if available)
+;;       (when project-name
+;;         (propertize (format " | %s" project-name) 'face 'font-lock-constant-face))
+
+;;       ;; Right: Point location
+;;       (propertize (format " | %s" point-info) 'face 'font-lock-comment-face)))))
+
+
+;; (defun my/header-line-format ()
+;;   "Create a custom header line format with right-aligned point information."
+;;   (let* ((file-name (or (buffer-file-name) (buffer-name)))
+;;          (short-file-name (file-name-nondirectory file-name))
+;;          (project-name (when (fboundp 'project-current)
+;;                          (let ((project (project-current)))
+;;                            (when project
+;;                              (file-name-nondirectory
+;;                               (directory-file-name
+;;                                (project-root project)))))))
+;;          (point-info (format "L%d C%d" (line-number-at-pos) (current-column)))
+;;          (modified (if (buffer-modified-p) "*" "")))
+
+;;     (format-mode-line
+;;      `(
+;;        ;; Left: File name with modification indicator
+;;        ,(propertize (format "%s%s" short-file-name modified)
+;;                     'face 'font-lock-keyword-face)
+
+;;        ;; Center: Project name (if available)
+;;        ,@(when project-name
+;;            (list
+;;             (propertize " | " 'face 'font-lock-comment-face)
+;;             (propertize project-name 'face 'font-lock-constant-face)))
+
+;;        ;; Right-aligned: Point location
+;;        (:align-to (+ right 0))
+;;        ,(propertize point-info 'face 'font-lock-comment-face)))))
+
+
+(defun my/header-line-format ()
+  "Create a custom header line format with right-aligned point information."
+  (let* ((file-name (or (buffer-file-name) (buffer-name)))
+         (short-file-name (file-name-nondirectory file-name))
+         (project-name (when (fboundp 'project-current)
+                         (let ((project (project-current)))
+                           (when project
+                             (file-name-nondirectory
+                              (directory-file-name
+                               (project-root project)))))))
+         (point-info (format "L%d C%d" (line-number-at-pos) (current-column)))
+         (modified (if (buffer-modified-p) "*" ""))
+         (window-width (window-total-width))
+         (left-content (format "%s%s%s"
+                               short-file-name
+                               modified
+                               (if project-name (format " | %s" project-name) "")))
+         (padding (make-string (- window-width
+                                  (length left-content)
+                                  (length point-info))
+                               ? )))
+
+    (format "%s%s"
+            (propertize left-content 'face 'font-lock-keyword-face)
+            (propertize (concat padding point-info) 'face 'font-lock-comment-face))))
+
+
+;; (defun my/simple-debug-header-line ()
+;;   "A simple debug function to test header-line generation."
+;;   (format-mode-line
+;;    '(
+;;      ;; Hardcoded test content
+;;      (:eval (concat "File: " (or (buffer-file-name) (buffer-name))))
+;;      " | "
+;;      (:eval (format "Point: L%d C%d" (line-number-at-pos) (current-column)))
+;;    )))
+
+;; Set the header-line-format
+(setq-default header-line-format '(:eval (my/header-line-format)))
+;; (setq-default header-line-format '(:eval (my/simple-debug-header-line)))
+
 #+end_src
