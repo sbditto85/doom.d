@@ -827,8 +827,34 @@ Generated this with Claude using the prompt "Can you generate a header-line-form
 ;;        ,(propertize point-info 'face 'font-lock-comment-face)))))
 
 
+;; (defun my/header-line-format ()
+;;   "Create a custom header line format with right-aligned point information."
+;;   (let* ((file-name (or (buffer-file-name) (buffer-name)))
+;;          (short-file-name (file-name-nondirectory file-name))
+;;          (project-name (when (fboundp 'project-current)
+;;                          (let ((project (project-current)))
+;;                            (when project
+;;                              (file-name-nondirectory
+;;                               (directory-file-name
+;;                                (project-root project)))))))
+;;          (point-info (format "L%d C%d" (line-number-at-pos) (current-column)))
+;;          (modified (if (buffer-modified-p) "*" ""))
+;;          (window-width (window-total-width))
+;;          (left-content (format "%s%s%s"
+;;                                short-file-name
+;;                                modified
+;;                                (if project-name (format " | %s" project-name) "")))
+;;          (padding (make-string (- window-width
+;;                                   (length left-content)
+;;                                   (length point-info))
+;;                                ? )))
+
+;;     (format "%s%s"
+;;             (propertize left-content 'face 'font-lock-keyword-face)
+;;             (propertize (concat padding point-info) 'face 'font-lock-comment-face))))
+
 (defun my/header-line-format ()
-  "Create a custom header line format with right-aligned point information."
+  "Create a custom header line format with side padding, task info, and right-aligned point information."
   (let* ((file-name (or (buffer-file-name) (buffer-name)))
          (short-file-name (file-name-nondirectory file-name))
          (project-name (when (fboundp 'project-current)
@@ -839,19 +865,38 @@ Generated this with Claude using the prompt "Can you generate a header-line-form
                                (project-root project)))))))
          (point-info (format "L%d C%d" (line-number-at-pos) (current-column)))
          (modified (if (buffer-modified-p) "*" ""))
-         (window-width (window-total-width))
-         (left-content (format "%s%s%s"
+         (side-padding "   ") ;; 3 spaces padding
+
+         ;; Task information
+         (task-info (format "[%s]"
+                     (or (and (boundp 'task-manager-current-task)
+                              task-manager-current-task
+                              (fboundp 'task-manager-task-text)
+                              (task-manager-task-text task-manager-current-task))
+                         "None")))
+
+         ;; Left content (with side padding)
+         (left-content (format "%s%s%s%s"
+                               side-padding
                                short-file-name
                                modified
                                (if project-name (format " | %s" project-name) "")))
-         (padding (make-string (- window-width
-                                  (length left-content)
-                                  (length point-info))
+
+         (window-width (window-total-width))
+
+         ;; Calculate padding for right side
+         (right-content (format "%s %s" task-info point-info))
+         (padding (make-string (max 1 (- window-width
+                                        (length left-content)
+                                        (length right-content)
+                                        (length side-padding)))
                                ? )))
 
-    (format "%s%s"
+    (format "%s%s%s%s"
             (propertize left-content 'face 'font-lock-keyword-face)
-            (propertize (concat padding point-info) 'face 'font-lock-comment-face))))
+            (propertize padding 'face 'default)
+            (propertize task-info 'face 'font-lock-string-face)
+            (propertize (concat " " point-info side-padding) 'face 'font-lock-comment-face))))
 
 
 ;; (defun my/simple-debug-header-line ()
