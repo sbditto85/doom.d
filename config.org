@@ -768,7 +768,7 @@ Generated this with Claude using the prompt "Can you generate a header-line-form
                                side-padding
                                short-file-name
                                modified
-                               (if project-name (format " | %s" project-name) "")))
+                               (if project-name (format " [%s]" project-name) "")))
 
          (window-width (window-total-width))
 
