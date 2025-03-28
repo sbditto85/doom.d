@@ -35,12 +35,13 @@
   - [[#capture-templates][Capture Templates]]
 - [[#ruby][Ruby]]
   - [[#compilation][Compilation]]
-- [[#casing][Casing]]
+- [[#disabled-casing][DISABLED Casing]]
 - [[#running-tests][Running tests]]
 - [[#aarons-config][Aaron's config]]
   - [[#ruby-mode][Ruby mode]]
   - [[#people-tag][People tag]]
 - [[#experimental-header-line-format][Experimental header-line-format]]
+- [[#experimental-task-manager][Experimental Task Manager]]
 
 * Doom Default Stuff
 $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -546,9 +547,9 @@ When sharing with others the font size should be larger so its easier for them t
 #+end_src
 
 
-* Casing
+* DISABLED Casing
 
-#+begin_src elisp :tangle yes
+#+begin_src elisp :tangle no
 
   (map! :leader :desc "Ruby Casing Cycle" :n "t t" #'string-inflection-ruby-style-cycle)
 
@@ -912,5 +913,17 @@ Generated this with Claude using the prompt "Can you generate a header-line-form
 ;; Set the header-line-format
 (setq-default header-line-format '(:eval (my/header-line-format)))
 ;; (setq-default header-line-format '(:eval (my/simple-debug-header-line)))
+
+#+end_src
+
+
+* Experimental Task Manager
+
+Bindings for my vibe coded task manager
+
+#+begin_src elisp :tangle yes
+
+  (map! :leader :desc "Toggle Task Manager" :n "t t" #'task-manager-toggle)
+  (map! :leader :desc "Add Task" :n "t a" #'task-manager-quick-add-task)
 
 #+end_src
