@@ -42,6 +42,7 @@
   - [[#people-tag][People tag]]
 - [[#experimental-header-line-format][Experimental header-line-format]]
 - [[#experimental-task-manager][Experimental Task Manager]]
+- [[#experimental-remove-mode-line][Experimental remove mode line]]
 
 * Doom Default Stuff
 $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -925,5 +926,23 @@ Bindings for my vibe coded task manager
 
   (map! :leader :desc "Toggle Task Manager" :n "t t" #'task-manager-toggle)
   (map! :leader :desc "Add Task" :n "t a" #'task-manager-quick-add-task)
+
+#+end_src
+
+
+* Experimental remove mode line
+
+#+begin_src elisp :tangle yes
+
+;; Completely disable the mode line
+(setq-default mode-line-format nil)
+
+;; Add a hook to ensure mode-line stays disabled
+(add-hook 'after-change-major-mode-hook
+          (lambda () (setq mode-line-format nil)))
+
+;; Disable related packages that might be bringing it back
+(after! doom-modeline
+  (doom-modeline-mode -1))
 
 #+end_src
