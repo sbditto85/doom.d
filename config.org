@@ -732,15 +732,6 @@ For Emacs 30 to have better auto indention of ruby code blocks
 Generated this with Claude using the prompt "Can you generate a header-line-format that will show the current file name, project name on the right and then the point location to the right side?" after asking it questions to learn about the ==header-line-format==
 
 #+begin_src elisp :tangle yes
-(defun my/project-name ()
-  "Get the current project name."
-  (when (fboundp 'project-current)
-    (let ((project (project-current)))
-      (when project
-        (file-name-nondirectory
-         (directory-file-name
-          (project-root project)))))))
-
 (defun my/header-line-format ()
   "Create a custom header line format with side padding, task info, and right-aligned point information."
   (let* ((file-name (or (buffer-file-name) (buffer-name)))
@@ -788,6 +779,17 @@ Generated this with Claude using the prompt "Can you generate a header-line-form
 
 ;; Set the header-line-format
 (setq-default header-line-format '(:eval (my/header-line-format)))
+
+;; Alternative approach with debouncing
+(defvar my/header-update-timer nil)
+
+(defun my/schedule-header-update ()
+  (when my/header-update-timer
+    (cancel-timer my/header-update-timer))
+  (setq my/header-update-timer
+        (run-with-idle-timer 0.1 nil #'force-mode-line-update)))
+
+(add-hook 'post-command-hook 'my/schedule-header-update)
 
 #+end_src
 
