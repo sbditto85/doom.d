@@ -786,20 +786,8 @@ Generated this with Claude using the prompt "Can you generate a header-line-form
             (propertize task-info 'face 'font-lock-string-face)
             (propertize (concat " " point-info side-padding) 'face 'font-lock-comment-face))))
 
-
-;; (defun my/simple-debug-header-line ()
-;;   "A simple debug function to test header-line generation."
-;;   (format-mode-line
-;;    '(
-;;      ;; Hardcoded test content
-;;      (:eval (concat "File: " (or (buffer-file-name) (buffer-name))))
-;;      " | "
-;;      (:eval (format "Point: L%d C%d" (line-number-at-pos) (current-column)))
-;;    )))
-
 ;; Set the header-line-format
 (setq-default header-line-format '(:eval (my/header-line-format)))
-;; (setq-default header-line-format '(:eval (my/simple-debug-header-line)))
 
 #+end_src
 
