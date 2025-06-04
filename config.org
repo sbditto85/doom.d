@@ -43,6 +43,7 @@
 - [[#experimental-header-line-format][Experimental header-line-format]]
 - [[#experimental-task-manager][Experimental Task Manager]]
 - [[#experimental-remove-mode-line][Experimental remove mode line]]
+- [[#evil-escape][Evil escape]]
 
 * Doom Default Stuff
 $DOOMDIR/config.el -*- lexical-binding: t; -*-
@@ -820,5 +821,15 @@ Bindings for my vibe coded task manager
 ;; Disable related packages that might be bringing it back
 (after! doom-modeline
   (doom-modeline-mode -1))
+
+#+end_src
+
+* Evil escape
+
+#+begin_src elisp :tangle yes
+
+(evil-escape-mode 1)
+
+(setq-default evil-escape-key-sequence "jk")
 
 #+end_src
