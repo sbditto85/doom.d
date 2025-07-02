@@ -244,9 +244,11 @@ Attempting to have the diff show the full width and not truncate the file names 
   )
 (defun custom/comment-attribution ()
   (interactive)
-  (evil-append 0)
-  (insert " - " (custom/author) ", ")
-  (custom/insert-date-time)
+  (save-excursion
+    (evil-append 0)
+    (insert " - " (custom/author) ", ")
+    (custom/insert-date-time)
+    )
   )
 
 (map! :leader :desc "Attribute comment" :n "c a" #'custom/comment-attribution)
