@@ -575,8 +575,8 @@ You can call ==vterm-send-string== when the current buffer is in ==vterm-mode==,
   (defun custom/test-web-project ()
     (interactive)
     (if (equal current-prefix-arg nil)
-        (custom/split-with-process "rs")
-        (custom/split-with-process "s && rs")
+        (custom/split-with-process "prs")
+        (custom/split-with-process "s && prs")
       ))
 
   (defun custom/split-with-process (command)
