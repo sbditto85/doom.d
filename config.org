@@ -40,6 +40,7 @@
 - [[#aarons-config][Aaron's config]]
   - [[#ruby-mode][Ruby mode]]
   - [[#people-tag][People tag]]
+  - [[#replace-strings][Replace strings]]
 - [[#experimental-header-line-format][Experimental header-line-format]]
 - [[#experimental-task-manager][Experimental Task Manager]]
 - [[#experimental-remove-mode-line][Experimental remove mode line]]
@@ -728,6 +729,44 @@ For Emacs 30 to have better auto indention of ruby code blocks
   (aj-work-log-people/body))
 
 (define-key markdown-mode-map (kbd "C-c C-p") #'aj-work-log-people)
+#+end_src
+
+** Replace strings
+
+#+begin_src elisp :tangle no
+(defvar replace-variations-input-history nil)
+(defvar replace-variations-replacement-history nil)
+(defvar replace-variations-map nil)
+
+(defun replace-variations (query)
+  "Replace all unique variations of a text string in the current buffer."
+  (interactive (list (read-string "Find (e.g., \"some name\"): " nil 'replace-variations-input-history)))
+  (if (not (string-match-p "\\S-" query))
+      (user-error "Query must include a non-whitespace character")
+    (let* ((pattern (replace-regexp-in-string "\\s-+" ".?" (regexp-quote query)))
+           (matches (save-excursion
+                      (let ((case-fold-search t) acc)
+                        (goto-char (point-min))
+                        (while (re-search-forward pattern nil t)
+                          (push (match-string-no-properties 0) acc))
+                        (delete-dups (nreverse acc))))))
+      (if (null matches)
+          (message "No matches for /%s/" query)
+        (dolist (m matches)
+          (let* ((cell (assoc query replace-variations-map))
+                 (sub (cdr cell))
+                 (prior (and cell (alist-get m sub nil nil #'equal)))
+                 (repl (read-string (format "Replace '%s' with: " m) prior 'replace-variations-replacement-history)))
+            (setq sub (cons (cons m repl) (assq-delete-all m sub)))
+            (if cell (setcdr cell sub) (push (cons query sub) replace-variations-map))
+            (save-excursion
+              (let ((case-fold-search nil))
+                (goto-char (point-min))
+                (while (search-forward m nil t)
+                  (condition-case nil
+                      (replace-match repl t t)
+                    (text-read-only nil)
+                    (buffer-read-only nil)))))))))))
 #+end_src
 
 * Experimental header-line-format
