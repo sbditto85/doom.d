@@ -774,10 +774,47 @@ For Emacs 30 to have better auto indention of ruby code blocks
 Generated this with Claude using the prompt "Can you generate a header-line-format that will show the current file name, project name on the right and then the point location to the right side?" after asking it questions to learn about the ==header-line-format==
 
 #+begin_src elisp :tangle yes
+(defun my/condensed-file-path (file-path)
+  "Return a condensed path from project root.
+First directory is fully spelled out, nested directories use first letter only,
+and filename is fully spelled out. Example: src/components/auth/Login.js -> src/c/a/Login.js"
+  (if (and (fboundp 'project-current)
+           (project-current))
+      (let* ((project (project-current))
+             (project-root (project-root project))
+             (relative-path (file-relative-name file-path project-root)))
+        ;; Only condense if the file is actually within the project
+        (if (string-prefix-p ".." relative-path)
+            ;; File is outside project, just show filename
+            (file-name-nondirectory file-path)
+          ;; Split path into components
+          (let* ((components (split-string relative-path "/"))
+                 (num-components (length components)))
+            (cond
+             ;; Just a filename at project root
+             ((= num-components 1)
+              (car components))
+             ;; One directory + filename
+             ((= num-components 2)
+              relative-path)
+             ;; Multiple directories + filename
+             (t
+              (let ((first-dir (car components))
+                    (middle-dirs (butlast (cdr components)))
+                    (filename (car (last components))))
+                (concat first-dir "/"
+                        (mapconcat (lambda (dir) (substring dir 0 1))
+                                   middle-dirs
+                                   "/")
+                        (if middle-dirs "/" "")
+                        filename)))))))
+    ;; No project found, fall back to filename only
+    (file-name-nondirectory file-path)))
+
 (defun my/header-line-format ()
   "Create a custom header line format with side padding, task info, and right-aligned point information."
   (let* ((file-name (or (buffer-file-name) (buffer-name)))
-         (short-file-name (file-name-nondirectory file-name))
+         (short-file-name (my/condensed-file-path file-name))
          (project-name (when (fboundp 'project-current)
                          (let ((project (project-current)))
                            (when project
