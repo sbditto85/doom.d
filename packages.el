@@ -68,3 +68,5 @@
 
 (package! task-manager
   :recipe (:local-repo "~/.doom.d/local" :files ("task-manager.el")))
+
+(package! speed-type)
