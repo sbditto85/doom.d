@@ -504,13 +504,13 @@ When sharing with others the font size should be larger so its easier for them t
 (after! org
   (setq org-capture-templates
     `(("t" "Tasks / Projects")
-      ("tt" "Task" entry (file+olp "tasks.org" "Inbox")
+      ("tt" "Inbox Task" entry (file+olp "tasks.org" "Inbox")
            "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
 
-      ("tc" "Task" entry (file+olp "tasks.org" "Current Work Item")
+      ("tc" "Work Item Task" entry (file+olp "tasks.org" "Current Work Item")
            "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
 
-      ("tp" "Task" entry (file+olp "tasks.org" "Personal")
+      ("tp" "Personal Task" entry (file+olp "tasks.org" "Personal")
            "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
 
       ;; ("j" "Journal Entries")
